@@ -1,0 +1,32 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Install .NET SDK
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      # 3. Restore packages
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # 4. Build project
+      - name: Build solution
+        run: dotnet build --no-restore
+
+      # 5. Run tests
+      - name: Run tests
+        run: dotnet test --no-build --verbosity normal
